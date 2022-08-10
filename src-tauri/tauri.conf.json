@@ -17,6 +17,25 @@
       "window": {
         "all": true,
         "create": false
+      },
+      "fs": {
+        "all": true,
+        "readFile": false,
+        "writeFile": false,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": false,
+        "scope": {
+          "allow": ["$DATA/*","$DATA","/*"]
+        }
+      },
+      "dialog": {
+        "all": true,
+        "open": true,
+        "save": true
       }
     },
     "bundle": {
@@ -34,7 +53,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.DBFZ.ModManager",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

@@ -1,0 +1,118 @@
+html,body {
+    margin: 0;
+    font-family: monospace;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#Background{
+    z-index: 1;
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+#titleBar{
+    background-color: #444;
+    width: 100%;
+    height: 32px;
+    float: top;
+    z-index: -1;
+}
+#mainWindow{
+    background-color: #555;
+    width:62%;
+    height: calc(96% - 12px);
+    top: 12px;
+    margin-left: -12px;
+    position: absolute;
+    border-radius: 8px;
+    z-index: -1;
+    border-radius: 8px;
+}
+#modsWindow{
+    background-color: #555;
+    width: 40%;
+    height: calc(96% - 12px);
+    position: absolute;
+    left: 62%;
+    top: 12px;
+    
+    margin-left: 1.5px;
+    z-index: -1;
+}
+
+#titleBar #close{
+    margin-right: 0 !important;
+}
+
+#titleBar #folder{
+    float: left !important;
+}
+
+#titleBar #title{
+    width: 50%;
+    height: 100%;
+    color: white;
+    background-color: transparent;
+
+    position: relative;
+    left: 25%;
+    text-align: center;
+
+    font-weight: bold;
+    user-select: none;
+    font-size: 2.1em;
+}
+
+#titleBar .button{
+    width: 32px;
+    height: 32px;
+    float: right;
+
+    border: none;
+    background-color: #333;
+    color: white;
+
+    transition: all 0.25s;
+}
+#titleBar .button:hover{
+    background-color: #555;
+}
+
+
+/* Mod Tab */
+#modsWindow *{
+    width: 100%;
+    height: 5%;
+    color: white;
+
+
+    text-align: center;
+    font-size: auto;
+    word-wrap: break-word;
+
+    overflow: hidden;
+
+    font-size: 0.75em;
+    font-weight: bold;
+
+    background-color: transparent;
+
+    transition: all 0.25s;
+    border: none;
+}
+
+#modsWindow .ACTIVE{
+    color: green !important;
+}
+#modsWindow .INACTIVE{
+    color: red !important;
+}
+
+#modsWindow .ACTIVE:hover, #modsWindow .INACTIVE:hover{
+    background-color: #222;
+    color: white !important;
+}
