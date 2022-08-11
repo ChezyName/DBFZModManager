@@ -6,6 +6,10 @@ html,body {
     overflow: hidden;
 }
 
+*:focus{
+    outline: none;
+}
+
 #Background{
     z-index: 1;
     position:absolute;
@@ -30,18 +34,59 @@ html,body {
     position: absolute;
     border-radius: 8px;
     z-index: -1;
-    border-radius: 8px;
 }
-#modsWindow{
+
+#search {
+    border-bottom: 2.5px solid black;
+    color: white !important;
+    position: inherit;
+
     background-color: #555;
-    width: 40%;
-    height: calc(96% - 12px);
+    width: calc(38% - 16px);
+    height: 5%;
     position: absolute;
     left: 62%;
     top: 12px;
+    border-radius: 8px;
+}
+#search::placeholder {
+    color: white !important;
+}
+#search:focus::placeholder{
+    color: transparent !important;
+}
+
+#modsWindow{
+    background-color: #555;
+    width: 38%;
+    height: calc(90% - 12px);
+    position: absolute;
+    left: 62%;
+    top: calc(12px + 6%);
     
     margin-left: 1.5px;
     z-index: -1;
+
+    overflow-y: auto;
+    border-radius: 8px;
+}
+
+/* width */
+#modsWindow::-webkit-scrollbar {
+    width: 12px;
+  }
+/* Track */
+#modsWindow::-webkit-scrollbar-track {
+    background: transparent;
+}
+/* Handle */
+#modsWindow::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+}
+/* Handle on hover */
+#modsWindow::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 #titleBar #close{
@@ -101,7 +146,7 @@ html,body {
 
     background-color: transparent;
 
-    transition: all 0.25s;
+    transition: all 0.35s;
     border: none;
 }
 
@@ -112,7 +157,7 @@ html,body {
     color: red !important;
 }
 
-#modsWindow .ACTIVE:hover, #modsWindow .INACTIVE:hover{
+#modsWindow *:hover{
     background-color: #222;
     color: white !important;
 }
