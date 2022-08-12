@@ -261,14 +261,17 @@ console.log("FOLDER -> " + DBFZFolder);
 if(DBFZFolder == "" || DBFZFolder == null || DBFZFolder == undefined) topText.innerHTML = "<- Click The F!";
 
 document.getElementById("playN").addEventListener('click',async () => {
-  if(DBFZFolder != "" && DBFZFolder != null && DBFZFolder != undefined){
-    console.log("Running Normal Game");
-    appWindow.minimize();
+  console.log("Running Normal Game");
+  appWindow.minimize();
 
-    let dbfzBin = await join(DBFZFolder, 'RED', 'Binaries', 'Win64');
-    let file = dbfzBin+'/RED-Win64-Shipping.exe'
-    invoke('run_exe',{path:file});
-  }
+  let dbfzBin = await join(DBFZFolder, 'RED', 'Binaries', 'Win64');
+  let file = await join(dbfzBin,'RED-Win64-Shipping.exe')
+  invoke('exists',{path: file}).then((data) => {
+    if(data){
+      console.log("Opening File")
+      invoke('run_exe',{path:file});
+    }
+  })
 });
 
 document.getElementById("playM").addEventListener('click',async () => {
@@ -276,7 +279,7 @@ document.getElementById("playM").addEventListener('click',async () => {
   appWindow.minimize();
 
   let dbfzBin = await join(DBFZFolder, 'RED', 'Binaries', 'Win64');
-  let file = await join(dbfzBin,'/RED-Win64-Shipping-eac-nop-loaded.exe.exe')
+  let file = await join(dbfzBin,'RED-Win64-Shipping-eac-nop-loaded.exe.exe')
   invoke('exists',{path: file}).then((data) => {
     if(data){
       console.log("Opening File")
