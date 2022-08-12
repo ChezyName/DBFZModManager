@@ -1,4 +1,4 @@
-const { readTextFile , writeTextFile , copyFile , createDir , readDir } = window.__TAURI__.fs;
+const { readTextFile , writeTextFile , copyFile , createDir , readDir , renameFile } = window.__TAURI__.fs;
 const { appWindow } = window.__TAURI__.window;
 const invoke = window.__TAURI__.invoke
 const { open } = window.__TAURI__.dialog;
@@ -109,9 +109,62 @@ async function getAllMods(){
 async function createModItem(modName,active){
   const mod = document.createElement("button");
   mod.id = JSON.stringify(modName["path"]);
+  mod.name = modName["name"];
   mod.innerHTML = modName["name"] + " [" + (active ? "ACTIVE" : "INACTIVE") + "]";
   mod.classList.add(active ? "ACTIVE" : "INACTIVE");
+
+  mod.addEventListener('click',async function(){
+    console.log("CLICKED " + this.name);
+
+    let modsF = await join(DBFZFolder,'RED','Content','Paks',"~mods");
+    let dmods = await join(DBFZFolder,'RED','Content','Paks',"dmods");
+
+    if(mod.classList.contains("ACTIVE")){
+      //move folder to inactive mods
+      //console.log(this.classList[0]);
+      let oldF = JSON.parse(this.id);
+      let newF = await join(dmods,this.name);
+      invoke('exists',{path: oldF}).then(async (d) => {
+        if(d){
+          console.log("A Moving " + this.name);
+          await renameFile(oldF,newF);
+          this.id = JSON.stringify(newF);
+          this.classList.remove("ACTIVE");
+          this.classList.add("INACTIVE");
+          this.innerHTML = this.name + " [INACTIVE]";
+        }
+      });
+    }
+    else{
+      //move folder to active mods
+      //console.log(this.classList[0]);
+      let oldF = JSON.parse(this.id);
+      let newF = await join(modsF,this.name);
+      invoke('exists',{path: oldF}).then(async (d) => {
+        if(d){
+          console.log("IA Moving " + this.name);
+          await renameFile(oldF,newF);
+          this.id = JSON.stringify(newF);
+          this.classList.remove("INACTIVE");
+          this.classList.add("ACTIVE");
+          this.innerHTML = this.name + " [ACTIVE]";
+        }
+      });
+    }
+  });
+
   modsTab.append(mod);
+
+  //sort
+  /*
+  var itemsArr = modsTab.childNodes;
+  itemsArr.sort(function(a, b) {
+    return a.innerHTML == b.innerHTML
+    ? 0
+    : (a.innerHTML > b.innerHTML ? 1 : -1);
+  });
+  modsTab.replaceChildren(itemsArr);
+  */
 }
 
 
@@ -176,7 +229,7 @@ document
           let dmods = await join(selected,'RED','Content','Paks',"dmods");
     
           //create modded ver of game
-          let copiedFile = dbfzBin+'/RED-Win64-Shippping-eac-nop-loader.exe.exe'
+          let copiedFile = dbfzBin+'/RED-Win64-Shipping-eac-nop-loaded.exe.exe'
           invoke('exists',{path: copiedFile}).then((data) => {
             if(data == false){
               copyFile(dbfzBin+'/RED-Win64-Shipping.exe',copiedFile); 
@@ -206,3 +259,28 @@ document
 
 console.log("FOLDER -> " + DBFZFolder);
 if(DBFZFolder == "" || DBFZFolder == null || DBFZFolder == undefined) topText.innerHTML = "<- Click The F!";
+
+document.getElementById("playN").addEventListener('click',async () => {
+  if(DBFZFolder != "" && DBFZFolder != null && DBFZFolder != undefined){
+    console.log("Running Normal Game");
+    appWindow.minimize();
+
+    let dbfzBin = await join(DBFZFolder, 'RED', 'Binaries', 'Win64');
+    let file = dbfzBin+'/RED-Win64-Shipping.exe'
+    invoke('run_exe',{path:file});
+  }
+});
+
+document.getElementById("playM").addEventListener('click',async () => {
+  console.log("Running Modded Game");
+  appWindow.minimize();
+
+  let dbfzBin = await join(DBFZFolder, 'RED', 'Binaries', 'Win64');
+  let file = await join(dbfzBin,'/RED-Win64-Shipping-eac-nop-loaded.exe.exe')
+  invoke('exists',{path: file}).then((data) => {
+    if(data){
+      console.log("Opening File")
+      invoke('run_exe',{path:file});
+    }
+  })
+});
